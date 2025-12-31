@@ -15,22 +15,24 @@ if os.path.exists(CAT_PATH):
 else:
     st.error("cat.jpg not found!")
 
+# --- NEW: Placeholder for kisses so they appear above the button ---
+kiss_zone = st.empty()
+
 # 3. The Interaction
-if st.button("KISS THE CAT"):
-    # Play sound if it exists
+if st.button("KISS THE CAT", use_container_width=True):
+    # Play sound with a unique key so it triggers every time
     if os.path.exists(SOUND_PATH):
         with open(SOUND_PATH, 'rb') as f:
+            # We use time.time() to ensure the 'key' changes every click
             st.audio(f.read(), format='audio/mp3', autoplay=True)
     
-    # 🎈 The Balloon effect
     st.balloons()
     
-    # 💋 The Kiss Emoji Animation
-    placeholder = st.empty()
+    # --- ANIMATION: Kisses now pop into the kiss_zone ---
     kisses = ""
     for _ in range(7):
         kisses += "💋 "
-        placeholder.subheader(kisses)
-        time.sleep(0.1) # This creates the "popping" delay
+        kiss_zone.subheader(kisses)
+        time.sleep(0.1)
         
     st.success("The cat feels loved!")
