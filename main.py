@@ -4,7 +4,7 @@ import time
 
 # Get the correct path to your files
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-CAT_PATH = os.path.join(BASE_DIR, "static", "cat.jpg")
+CAT_PATH = os.path.join(BASE_DIR, "cat.jpg")
 SOUND_PATH = os.path.join(BASE_DIR, "static", "kiss.mp3")
 
 st.title("Cat Kisser 💋")
@@ -21,4 +21,5 @@ if st.button("KISS THE CAT"):
             st.audio(f.read(), format='audio/mp3', autoplay=True)
 
     st.balloons()
+
     st.success("The cat feels loved!")
