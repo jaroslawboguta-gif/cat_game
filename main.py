@@ -12,26 +12,24 @@ SOUND_PATH = os.path.join(BASE_DIR, "kiss.mp3")
 st.set_page_config(page_title="Cat Kisser", page_icon="💋")
 st.title("Cat Kisser 💋")
 
-# Improved: Reliable background kiss sound using JavaScript
+# Most reliable method: Hidden <audio autoplay> tag (no controls, plays instantly)
 def play_background_kiss():
     if os.path.exists(SOUND_PATH):
         with open(SOUND_PATH, "rb") as f:
             data = f.read()
             b64 = base64.b64encode(data).decode()
         
-        audio_js = f"""
+        audio_html = f"""
+        <audio autoplay="true" id="kiss-sound">
+            <source src="data:audio/mp3;base64,{b64}" type="audio/mp3">
+        </audio>
         <script>
-        // Remove any existing kiss sound to avoid duplicates
-        const existing = document.getElementById('kiss-sound');
-        if (existing) existing.remove();
-        
-        // Create and play new audio
-        const audio = new Audio("data:audio/mp3;base64,{b64}");
-        audio.id = 'kiss-sound';
-        audio.play().catch(e => console.log("Audio play blocked or failed:", e));
+            // Optional: Remove the audio element after it finishes playing to clean up
+            const audio = document.getElementById('kiss-sound');
+            audio.onended = () => audio.remove();
         </script>
         """
-        st.markdown(audio_js, unsafe_allow_html=True)
+        st.markdown(audio_html, unsafe_allow_html=True)
 
 # 2. Display the Cat
 if os.path.exists(CAT_PATH):
@@ -44,31 +42,32 @@ kiss_zone = st.empty()
 
 # 3. The Interaction
 if st.button("KISS THE CAT 💋", use_container_width=True):
-    # Play the kiss sound reliably
+    # Play the kiss sound (should work reliably now!)
     play_background_kiss()
     
-    # --- INTENSE KISS EXPLOSION ANIMATION ---
+    # --- EPIC KISS EXPLOSION ---
     all_kisses = ""
-    emojis = ["💋", "❤️", "💖", "💕", "😘", "🩷", "💗"]
+    emojis = ["💋", "❤️", "💖", "💕", "😘", "🩷", "💗", "🌸"]
     
-    kiss_zone.empty()  # Clear any previous kisses
+    kiss_zone.empty()  # Start fresh
     
-    for i in range(25):  # Increased for more chaos!
+    for i in range(30):  # Even more kisses for maximum love overload
         all_kisses += random.choice(emojis) + " "
-        # Bigger and more dramatic text
         kiss_zone.markdown(
-            f"<h1 style='text-align: center; font-size: {60 + i}px; line-height: 1.2;'>"
+            f"<h1 style='text-align: center; font-size: {50 + i*2}px; line-height: 1.2;'>"
             f"{all_kisses}</h1>",
             unsafe_allow_html=True
         )
-        time.sleep(0.05)  # Slightly slower for dramatic buildup, adjust as needed
+        time.sleep(0.04)  # Fast and furious
     
-    # Brief pause to let the final explosion sit
+    # Let the final explosion linger a bit
     time.sleep(0.8)
     
-    # Clear the explosion
+    # Clean up
     kiss_zone.empty()
     
-    # Victory message
-    st.success("MUAHHHHH! The cat is absolutely smothered in kisses! 😻❤️💋")
-    st.balloons()  # Extra celebration!
+    # Celebration time!
+    st.success("MUAHHHHHHH!!! The cat is drowning in kisses! 😻💕💋")
+    st.balloons()
+
+st.caption("Tip: Click the button multiple times — the sound should play every single time now! 🐱💨")
