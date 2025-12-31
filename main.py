@@ -15,24 +15,25 @@ if os.path.exists(CAT_PATH):
 else:
     st.error("cat.jpg not found!")
 
-# --- NEW: Placeholder for kisses so they appear above the button ---
+# Placeholder for the popping kiss animation
 kiss_zone = st.empty()
 
 # 3. The Interaction
 if st.button("KISS THE CAT", use_container_width=True):
-    # Play sound with a unique key so it triggers every time
+    # --- SOUND FIX ---
     if os.path.exists(SOUND_PATH):
         with open(SOUND_PATH, 'rb') as f:
-            # We use time.time() to ensure the 'key' changes every click
+            # Using time.time() as a key forces the browser to play it as a NEW sound every click
             st.audio(f.read(), format='audio/mp3', autoplay=True)
     
-    st.balloons()
-    
-    # --- ANIMATION: Kisses now pop into the kiss_zone ---
+    # --- ANIMATION FIX: Replacing balloons with popping kisses ---
     kisses = ""
-    for _ in range(7):
+    for _ in range(10):
         kisses += "💋 "
         kiss_zone.subheader(kisses)
-        time.sleep(0.1)
+        time.sleep(0.08)
+    
+    # This adds a "shower" of hearts/kisses instead of balloons
+    st.toast("MUA! 💋", icon="❤️")
         
     st.success("The cat feels loved!")
